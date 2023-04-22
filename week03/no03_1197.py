@@ -33,5 +33,5 @@ for i in range(e):
     if find_parent(a, parent) != find_parent(b, parent):
         union_parent(a, b, parent)
         total_cost += cost
-
+print(parent)
 print(total_cost)
