@@ -10,14 +10,12 @@ def dfs(node, num):
         return
     color = 3 - num
     visited[node] = color
-
     for i in graph[node]:
         if color == visited[i]:
             bipartite = True
             return
         if not visited[i]:
             dfs(i, color)
-    
 
 test_num = int(s.readline())
 
