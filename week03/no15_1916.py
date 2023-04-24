@@ -13,7 +13,7 @@ for _ in range(M):
 
 departure, arrive = map(int, s.readline().split())
 
-distances = [100000] * (N + 1)
+distances = [10**9] * (N + 1)
 queue = deque()
 queue.append([departure, 0])
 distances[departure] = 0
