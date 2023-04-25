@@ -34,8 +34,3 @@ while queue:
                     queue.append((nx, ny))
 
 print(visited[n-1][n-1])
-for i in graph:
-    print(i)
-print()
-for i in visited:
-    print(i)
