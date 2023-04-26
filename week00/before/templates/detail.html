@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <script
+            src="https://kit.fontawesome.com/c9149b938d.js"
+            crossorigin="anonymous"
+        ></script>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
+        />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <link rel="stylesheet" href="./static/style.css" />
+        <title>배달의 MATE | 상세페이지</title>
+
+        <script>
+            let user_name = "{{user_info}}";
+            function joinGroup(num) {
+                $.ajax({
+                    type: "POST",
+                    url: "/detail",
+                    data: { num_give: num, user_name: user_name },
+                    success: function (response) {
+                        if (response["result"] == "success") {
+                            // 변경된 정보를 반영하기 위해 새로고침합니다.
+                            window.location.reload();
+                        }
+                    },
+                });
+            }
+        </script>
+    </head>
+    <body>
+        <div class="container is-fluid">
+            {% for i in result%}
+            <div id="posting_num" class="hide">{{ i['num'] }}</div>
+            <div
+                class="columns is-half is-offset-one-quarter"
+                onclick="window.location.href ='/main'"
+            >
+                <div class="column is-4 is-offset-4 logo logo-lg"></div>
+            </div>
+            <!-- <form action=""> -->
+            <div class="field">
+                <div class="control">
+                    <div class="sub-color hide" id="time_exp_{{i['num']}}">
+                        {{ i["time_exp"] }}
+                    </div>
+                    <div class="sub-color" id="rest_time_{{i['num']}}"></div>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <h1 class="title">{{i["title"]}}</h1>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <div class="line"></div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <h5 class="subtitle is-5">{{i["content"]}}</h5>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <a
+                        class="button half link-color"
+                        target="_blank"
+                        href="{{i['item_link']}}"
+                        >link</a
+                    >
+                </div>
+            </div>
+
+            <div class="field link-field">
+                <div class="control">
+                    <p>
+                        참여인원
+                        <span id="current_{{i['num']}}"
+                            >{{i["cur_people"]}}</span
+                        >
+                        /
+                        <span id="minimum_{{i['num']}}"
+                            >{{i["min_people"]}}</span
+                        >
+                    </p>
+                </div>
+            </div>
+            {% if result[0]["num"] in my_join_list %}
+            <div id="cancle-detail">
+                <div class="field">
+                    <div class="control">
+                        <a
+                            class="button half-width main-bg-color"
+                            target="_blank"
+                            href="{{i['chat_link']}}"
+                        >
+                            오픈 채팅방 입장
+                        </a>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <button
+                            class="button half-width sub-bg-color"
+                            id="cancle-btn"
+                            onclick="cancleGroup({{result[0]['num']}})"
+                        >
+                            취소
+                        </button>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <p class="help is-danger">
+                            ⚠️오픈 채팅방을 나가신 후에 취소해주시기 바랍니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+
+            <div id="join-detail">
+                <div class="field">
+                    <div class="control">
+                        <button
+                            class="button half-width main-bg-color"
+                            id="join-btn"
+                            onclick="joinGroup({{result[0]['num']}})"
+                        >
+                            참여
+                        </button>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <p class="help" id="help-message">
+                            ⚠️참여시 오픈 채팅방으로 연결됩니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endif %} {% endfor %}
+            <!-- </form> -->
+        </div>
+        <script>
+            posting_num = parseInt($("#posting_num").text());
+            function hideShow() {
+                let time_now = Date.now() / 60 / 1000; // 분단위 현재 시간
+                card_id = posting_num;
+                time_exp = "#time_exp_" + posting_num;
+                let rest_time = parseInt($(time_exp).text() - time_now);
+                let rest_time_minute = rest_time % 60;
+                let rest_time_hour = parseInt(rest_time / 60);
+
+                let rest_time_id = "#rest_time_" + posting_num;
+
+                let cur_people_id = "#current_" + posting_num;
+                let min_people_id = "#minimum_" + posting_num;
+                cur_people = parseInt($(cur_people_id).text());
+                min_people = parseInt($(min_people_id).text());
+
+                rest_time_id = "#rest_time_" + posting_num;
+                if (rest_time < 0 || cur_people == min_people) {
+                    $(rest_time_id).text("공동구매 종료");
+                    $("#" + posting_num).hide();
+                    $("#join-btn").hide();
+                    $("#help-message").hide();
+                } else {
+                    $(rest_time_id).text(
+                        String(rest_time_hour).padStart(2, "0") +
+                            ":" +
+                            String(rest_time_minute).padStart(2, "0")
+                    );
+                    $("#" + posting_num).show();
+                }
+            }
+
+            hideShow();
+            setInterval(hideShow, 10000);
+
+            function cancleGroup(num) {
+                $.ajax({
+                    type: "POST",
+                    url: "/detail",
+                    data: { num_give: num, user_name: user_name },
+                    success: function (response) {
+                        if (response["result"] == "success") {
+                            // 변경된 정보를 반영하기 위해 새로고침합니다.
+                            window.location.reload();
+                        }
+                    },
+                });
+            }
+        </script>
+    </body>
+</html>

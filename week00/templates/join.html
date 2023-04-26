@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script
+            src="https://kit.fontawesome.com/c9149b938d.js"
+            crossorigin="anonymous"
+        ></script>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
+        />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <link rel="stylesheet" href="./static/style.css" />
+        <title>배달의 MATE | 회원가입</title>
+        <script>
+            function blank_check() {
+                let join_Id = $("#joinId").val();
+                let join_Pw = $("#joinPw").val();
+                let join_Name = $("#joinName").val();
+                let join_Class = $("#joinClass").val();
+                let join_Pwcheck = $("#joinPwCheck").val();
+                if (join_Id == "") {
+                    alert("ID를 입력하세요");
+                } else if (join_Name == "") {
+                    alert("이름을 입력하세요");
+                } else if (join_Pw == "") {
+                    alert("비밀번호를 입력하세요");
+                } else {
+                    joinbutton();
+                }
+            }
+            function joinbutton() {
+                let join_Id = $("#joinId").val();
+                let join_Pw = $("#joinPw").val();
+                let join_Name = $("#joinName").val();
+                let join_Class = $("#joinClass").val();
+                let join_Pwcheck = $("#joinPwCheck").val();
+                if (join_Pw == join_Pwcheck) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/join",
+                        data: {
+                            id_give: join_Id,
+                            name_give: join_Name,
+                            class_give: join_Class,
+                            pw_give: join_Pw,
+                        },
+
+                        success: function (response) {
+                            if (response["result"] == "success") {
+                                alert("회원가입 성공!");
+                                window.location.assign("/");
+                            } else {
+                                alert("아이디가 중복되었습니다.");
+                            }
+                        },
+                    });
+                } else {
+                    alert("비밀번호 확인이 일치하지 않습니다.");
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div class="container is-fluid">
+            <div class="column is-4 is-offset-4 logo logo-lg"></div>
+            <!-- <div class="columns is-half is-offset-one-quarter">
+            </div> -->
+
+            <form action="" method="post">
+                <!-- input class에 is-success 혹은 is-danger 로 상태 나타내기 -->
+                <div class="field">
+                    <div class="control has-icons-left has-icons-right">
+                        <input
+                            class="input"
+                            type="text"
+                            placeholder="ID"
+                            id="joinId"
+                        />
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-user"></i>
+                        </span>
+                        <span class="icon is-small is-right">
+                            <i class="fas fa-check"></i>
+                        </span>
+                    </div>
+                    <!-- <p class="help is-success">This username is available</p> -->
+                </div>
+                <div class="field half-flex">
+                    <div class="control half">
+                        <input
+                            class="input"
+                            type="text"
+                            placeholder="이름"
+                            id="joinName"
+                        />
+                    </div>
+                    <div class="control half">
+                        <div class="select half-width">
+                            <select class="half-width" id="joinClass">
+                                <option>블루</option>
+                                <option>그린</option>
+                                <option>레드</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <input
+                            class="input"
+                            type="password"
+                            placeholder="비밀번호"
+                            id="joinPw"
+                        />
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <input
+                            class="input"
+                            type="password"
+                            placeholder="비밀번호 확인"
+                            id="joinPwCheck"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <div class="field margin-50">
+                    <div class="control">
+                        <submit
+                            onclick="blank_check()"
+                            class="button half-width main-bg-color"
+                        >
+                            회원가입
+                        </submit>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <a href="/" class="button half-width sub-bg-color">
+                            뒤로가기
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

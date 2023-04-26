@@ -1,0 +1,2 @@
+SECRET_KEY = 'SPARTA'
+MONGO_DB = 'mongodb://bigPerson:872543@54.180.157.25'
