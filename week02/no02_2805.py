@@ -1,7 +1,9 @@
-import sys
+from sys import stdin as s
 
-N, M = map(int, sys.stdin.readline().split())
-tree = list(map(int, sys.stdin.readline().split()))
+s = open('input.txt','rt')
+
+N, M = map(int, s.readline().split())
+tree = list(map(int, s.readline().split()))
 
 
 start = 0
