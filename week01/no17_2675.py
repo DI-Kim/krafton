@@ -9,5 +9,3 @@ for _ in range(int(input())):
         for j in range(R):
             P += i
     print(P)
-
-    print(P)
