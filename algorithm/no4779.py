@@ -7,17 +7,20 @@ while True:
 
         n = 3 ** N
 
-        def cantoa(n):
+        def cantor(n):
             if n == 1:
                 print("-", end='')
                 return
             n //= 3
-            cantoa(n)
+
+            cantor(n)
+            
             for i in range(n):
                 print(' ', end='')
-            cantoa(n)
+            
+            cantor(n)
         
-        cantoa(n)
+        cantor(n)
         print()
 
     except:
