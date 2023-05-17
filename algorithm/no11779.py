@@ -40,9 +40,7 @@ while temp != start_city:
     print_destination.append(temp)
     temp = predeccessor[temp]
 
-# if print_destination[-1] != start_city:
 print_destination.append(start_city)
-# print(print_destination)
 
 print(distances[destination])
 print(len(print_destination))
